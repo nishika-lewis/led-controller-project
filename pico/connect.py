@@ -15,3 +15,12 @@ del ssid, password, wifi  # Make space in memory
 atClient = at_client.AtClient(atSign, writeKeys=False)
 atClient.pkam_authenticate(verbose=True)
 del at_client
+
+# Send LED data
+key = 'led'
+value = 0
+
+while True:
+    # Alternate between 0 and 1
+    value ^= 1
+    atClient.put_public(key, str(value))
