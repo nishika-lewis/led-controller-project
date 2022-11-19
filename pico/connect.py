@@ -1,26 +1,24 @@
-from lib.at_client import at_client
-from lib import wifi
-from lib.at_client import io_util
-
 # Read settings.json
+from lib.at_client import io_util
 ssid, password, atSign = io_util.read_settings()
 del io_util  # Make space in memory
 
 # Connect to wifi
+from lib import wifi
 print(f'Connecting to WiFi {ssid}...')
 wifi.init_wlan(ssid, password)
 del ssid, password, wifi  # Make space in memory
 
 # Connect and pkam authenticate into secondary
+from lib.at_client import at_client
 atClient = at_client.AtClient(atSign, writeKeys=False)
 atClient.pkam_authenticate(verbose=True)
-del at_client
+del at_client  # Make space in memory
 
-# Send LED data
-key = 'led'
-value = 0
+# Receive data from app
+key = 'instructions'
+appAtSign = '@computer0'
 
 while True:
-    # Alternate between 0 and 1
-    value ^= 1
-    atClient.put_public(key, str(value))
+    data = atClient.get_public(key, appAtSign)
+    print(data)

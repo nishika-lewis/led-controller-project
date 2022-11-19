@@ -10,25 +10,16 @@ public class App
     public static void main(String[] args) throws Exception
     {
         AtSign atSign = new AtSign("@computer0");
-        AtSign pico = new AtSign("@maximumcomputer");
         AtClient atClient = AtClient.withRemoteSecondary(atSign);
-        PublicKey pk = new KeyBuilders.PublicKeyBuilder(pico).key("led").build(); // public:led@computer0
-        String previousValue = null;
+        PublicKey pk = new KeyBuilders.PublicKeyBuilder(atSign).key("instructions").build();
+        int instruction = 0;
         
         while (true)
         {
-            Thread.sleep(500);
-            
-            String key = "led";
-            atClient.executeCommand("delete:cached:public:" + key + pico, false);
-            
-            String data = atClient.get(pk).get();
-            
-            if (!data.equals(previousValue))
-            {
-                System.out.println("We got a new value! Value: " + data);
-                previousValue = data;
-            }
+            Thread.sleep(5000);
+            String value = "" + instruction++;
+            String response = atClient.put(pk, value).get();
+            System.out.println(response);
         }
     }
 }
