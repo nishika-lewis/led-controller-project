@@ -1,4 +1,6 @@
 def main():
+    import gc
+
     # Read settings.json
     from lib.at_client import io_util
     ssid, password, atSign = io_util.read_settings()
@@ -13,8 +15,9 @@ def main():
     # Connect and pkam authenticate into secondary
     from lib.at_client import at_client
     atClient = at_client.AtClient(atSign, writeKeys=False)
+    gc.collect()
     atClient.pkam_authenticate(verbose=True)
-    del at_client  # Make space in memory
+    del at_client, gc  # Make space in memory
 
     # Receive data from app
     key = 'instructions'
@@ -24,6 +27,7 @@ def main():
     while True:
         data = atClient.get_public(key, appAtSign)
         print(data)
+
 
 if __name__ == '__main__':
     main()
