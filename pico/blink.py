@@ -1,10 +1,10 @@
-from machine import Pin
-from time import sleep
-
-
 def main():
-    led = Pin("LED", Pin.OUT)
+    from machine import Pin
+    from time import sleep
 
+    led = Pin("LED", Pin.OUT) # Denotes the on-board LED.
+
+    # Blink the LED five times.
     for i in range(10):
         led.toggle()
         sleep(0.5)
