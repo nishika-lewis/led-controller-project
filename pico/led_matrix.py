@@ -10,28 +10,28 @@ def init_matrix():
     ss = Pin(5, Pin.OUT)
 
     # Create a 32x8 matrix display instance with the lowest brightness.
-    display = Matrix8x8(spi, ss, 4)
-    display.brightness(0)  # Value can range from [0, 15].
+    matrix = Matrix8x8(spi, ss, 4)
+    matrix.brightness(0)  # Value can range from [0, 15].
 
     # Clear the display.
-    display.fill(0)
-    display.show()
+    matrix.fill(0)
+    matrix.show()
     sleep(0.5)
 
-    return display
+    return matrix
 
 
 # Display the scrolling text once, starting from the rightmost matrix.
-def display_text(display: Matrix8x8, text: str):
+def display_text(matrix: Matrix8x8, text: str):
     columns = len(text) * 8  # Number of LED columns needed.
 
     for i in range(32, -columns, -1):
         # Write new text to the buffer and display it on the LEDs.
-        display.text(text, i, 0, 1)
-        display.show()
+        matrix.text(text, i, 0, 1)
+        matrix.show()
         sleep(0.1)  # Set the scrolling speed here.
 
         # Clear the previous text.
-        display.fill(0)
+        matrix.fill(0)
 
-    display.show()  # Clear leftover text from longer characters.
+    matrix.show()  # Clear leftover text from longer characters.
