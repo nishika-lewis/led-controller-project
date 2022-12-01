@@ -16,6 +16,11 @@ public class App
     
     public static void main(String args[]) throws Exception
     {
+        startPrompt();
+    }
+    
+    public static void startPrompt() throws Exception
+    {
         System.out.println(PROMPT); // Display starting prompt.
         
         try (Scanner sc = new Scanner(System.in))
@@ -60,7 +65,7 @@ public class App
      * @param text - the text to display on the LED matrix.
      * @throws Exception - if there was an error communicating with the atPlatform.
      */
-    private static void displayText(String text) throws Exception
+    public static void displayText(String text) throws Exception
     {
         // Connect to the remote secondary of the app's atsign.
         AtClient atClient = AtClient.withRemoteSecondary(APP_ATSIGN);
@@ -75,14 +80,15 @@ public class App
         // Send new display text to the app's public key.
         sendLEDText(atClient, text.equals(previousText) ? ' ' + text : text);
         
-        // Wait until the LED status changes before returning.
+        // Wait until the pico receives the display text.
         while (ledStatus.equals(beginStatus))
         {
             Thread.sleep(1000);
             ledStatus = getLEDStatus(atClient, pk);
         }
         
-        // By this point, the pico has displayed the complete LED text.
+        // Wait for the LED text to fully display before returning.
+        delay(text);
     }
     
     /**
@@ -123,5 +129,16 @@ public class App
     {
         PublicKey pk = new KeyBuilders.PublicKeyBuilder(APP_ATSIGN).key(APP_KEY).build();
         atClient.put(pk, text);
+    }
+    
+    /**
+     * Delays for the amount of time it takes for the given text to display.
+     * 
+     * @param text - text that is being displayed on the LED matrix.
+     */
+    public static void delay(String text) throws InterruptedException
+    {
+        int displayCharacters = text.trim().length();
+        Thread.sleep(9000 + 800 * displayCharacters);
     }
 }
