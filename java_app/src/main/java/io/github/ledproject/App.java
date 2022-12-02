@@ -16,7 +16,8 @@ public class App
     
     public static void main(String args[]) throws Exception
     {
-        startPrompt();
+        if (args.length > 0) displayText(args[0]);
+        else startPrompt();
     }
     
     public static void startPrompt() throws Exception
@@ -86,9 +87,6 @@ public class App
             Thread.sleep(1000);
             ledStatus = getLEDStatus(atClient, pk);
         }
-        
-        // Wait for the LED text to fully display before returning.
-        delay(text);
     }
     
     /**
@@ -139,6 +137,6 @@ public class App
     public static void delay(String text) throws InterruptedException
     {
         int displayCharacters = text.trim().length();
-        Thread.sleep(9000 + 800 * displayCharacters);
+        Thread.sleep(4250 + 800 * displayCharacters);
     }
 }
