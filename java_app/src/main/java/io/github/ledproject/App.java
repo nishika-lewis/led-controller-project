@@ -1,6 +1,7 @@
 package io.github.ledproject;
 
 import java.util.Scanner;
+import org.apache.commons.lang3.StringUtils;
 import org.atsign.client.api.AtClient;
 import org.atsign.common.AtSign;
 import org.atsign.common.KeyBuilders;
@@ -16,8 +17,8 @@ public class App
     
     public static void main(String args[]) throws Exception
     {
-        if (args.length > 0) displayText(args[0]);
-        else startPrompt();
+        if (args.length == 0) startPrompt();
+        else if (StringUtils.isNotBlank(args[0])) displayText(args[0]);
     }
     
     public static void startPrompt() throws Exception
