@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.LinkedList;
+import java.util.Queue;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,6 +26,12 @@ public class UI extends JFrame
     // Display areas for the on/off LED images.
     private JLabel[] ledLabels;
     
+    // Queue for text to be displayed.
+    private Queue<String> displayQueue;
+    
+    // Whether the display queue is busy.
+    private boolean queueBusy;
+    
     // On/off images for the LED.
     private final static ImageIcon LED_ON_IMAGE = new ImageIcon("assets/led_on.png");
     private final static ImageIcon LED_OFF_IMAGE = new ImageIcon("assets/led_off.png");
@@ -36,8 +44,10 @@ public class UI extends JFrame
     public UI(String title)
     {
         super(title);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.ledLabels = new JLabel[] {new JLabel(), new JLabel()};
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ledLabels = new JLabel[] {new JLabel(), new JLabel()};
+        displayQueue = new LinkedList<String>();
+        queueBusy = false;
         turnOffLED();
     }
     
@@ -150,9 +160,8 @@ public class UI extends JFrame
     private JButton fixedButton(String text)
     {
         JButton jb = new JButton(text);
-        getFont();
         jb.setFont(new Font("Calibri", Font.PLAIN, 48));
-        jb.addActionListener(e -> this.flashLED(text));
+        jb.addActionListener(e -> flashLED(text));
         return jb;
     }
     
@@ -161,8 +170,8 @@ public class UI extends JFrame
      */
     private void turnOnLED()
     {
-        this.ledLabels[0].setIcon(LED_ON_IMAGE);
-        this.ledLabels[1].setIcon(LED_ON_IMAGE);
+        ledLabels[0].setIcon(LED_ON_IMAGE);
+        ledLabels[1].setIcon(LED_ON_IMAGE);
     }
     
     /**
@@ -170,8 +179,8 @@ public class UI extends JFrame
      */
     private void turnOffLED()
     {
-        this.ledLabels[0].setIcon(LED_OFF_IMAGE);
-        this.ledLabels[1].setIcon(LED_OFF_IMAGE);
+        ledLabels[0].setIcon(LED_OFF_IMAGE);
+        ledLabels[1].setIcon(LED_OFF_IMAGE);
     }
     
     /**
@@ -187,16 +196,32 @@ public class UI extends JFrame
             @Override
             protected Object doInBackground() throws Exception
             {
-                App.displayText(text); // Send display text to the pico.
-                Thread.sleep(4750); // Wait for pico to initialize text.
-                turnOnLED(); // Turn LED images "on."
-                App.delay(text); // Wait for the display text to fully scroll.
-                turnOffLED(); // Turn LED images "off."
+                queueBusy = true; // Lock thread to prevent concurrent text display.
+                
+                // Loop until all display text has been processed by order of button press.
+                while (!displayQueue.isEmpty())
+                {
+                    String text = displayQueue.poll();
+                    App.displayText(text); // Send display text to the pico.
+                    Thread.sleep(4750); // Wait for pico to initialize text.
+                    turnOnLED(); // Turn LED images "on."
+                    App.delay(text); // Wait for the display text to fully scroll.
+                    turnOffLED(); // Turn LED images "off."
+                }
                 
                 return null;
             }
+            
+            @Override
+            protected void done()
+            {
+                queueBusy = false; // Release thread lock.
+            }
         };
         
-        if (StringUtils.isNotBlank(text)) sw.execute();
+        // Add non-blank text to the display queue, and start
+        // up a display thread if one is not already running.
+        if (StringUtils.isNotBlank(text)) displayQueue.add(text);
+        if (!queueBusy && displayQueue.size() == 1) sw.execute();
     }
 }
