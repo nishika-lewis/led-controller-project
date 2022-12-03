@@ -1,6 +1,7 @@
 package io.github.ledproject;
 
 import java.util.Scanner;
+import org.apache.commons.lang3.StringUtils;
 import org.atsign.client.api.AtClient;
 import org.atsign.common.AtSign;
 import org.atsign.common.KeyBuilders;
@@ -15,6 +16,12 @@ public class App
     private static final String PROMPT = "Greetings! What text would you like to display?\n1. AtSign\n2. UMass Boston\n3. Hello World!\n4. (Custom)\n5. Quit";
     
     public static void main(String args[]) throws Exception
+    {
+        if (args.length == 0) startPrompt();
+        else if (StringUtils.isNotBlank(args[0])) displayText(args[0]);
+    }
+    
+    public static void startPrompt() throws Exception
     {
         System.out.println(PROMPT); // Display starting prompt.
         
@@ -60,7 +67,7 @@ public class App
      * @param text - the text to display on the LED matrix.
      * @throws Exception - if there was an error communicating with the atPlatform.
      */
-    private static void displayText(String text) throws Exception
+    public static void displayText(String text) throws Exception
     {
         // Connect to the remote secondary of the app's atsign.
         AtClient atClient = AtClient.withRemoteSecondary(APP_ATSIGN);
@@ -75,14 +82,12 @@ public class App
         // Send new display text to the app's public key.
         sendLEDText(atClient, text.equals(previousText) ? ' ' + text : text);
         
-        // Wait until the LED status changes before returning.
+        // Wait until the pico receives the display text.
         while (ledStatus.equals(beginStatus))
         {
             Thread.sleep(1000);
             ledStatus = getLEDStatus(atClient, pk);
         }
-        
-        // By this point, the pico has displayed the complete LED text.
     }
     
     /**
@@ -123,5 +128,16 @@ public class App
     {
         PublicKey pk = new KeyBuilders.PublicKeyBuilder(APP_ATSIGN).key(APP_KEY).build();
         atClient.put(pk, text);
+    }
+    
+    /**
+     * Delays for the amount of time it takes for the given text to display.
+     * 
+     * @param text - text that is being displayed on the LED matrix.
+     */
+    public static void delay(String text) throws InterruptedException
+    {
+        int displayCharacters = text.trim().length();
+        Thread.sleep(4250 + 800 * displayCharacters);
     }
 }

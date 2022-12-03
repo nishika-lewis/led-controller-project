@@ -43,12 +43,13 @@ def main():
         # Whenever the text changes, we know the user has chosen
         # a new option. Display the text on the LED matrix.
         if text != previousText:
-            display_text(matrix, text.strip())
-            previousText = text
-
             # Update the LED status to let the app know it can continue.
             ledStatus ^= 1
             atClient.put_public(picoKey, str(ledStatus))
+
+            # Display LED text w/o any leading or trailing whitespace.
+            display_text(matrix, text.strip())
+            previousText = text
 
 
 if __name__ == '__main__':
