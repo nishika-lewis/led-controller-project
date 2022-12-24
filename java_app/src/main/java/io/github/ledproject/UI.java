@@ -134,7 +134,7 @@ public class UI extends JFrame
         // Put the quit button in the quit panel.
         quitPanel.add(quitButton);
         
-        // Add each panels into the frame.
+        // Add each panel into the frame.
         frame.setLayout(new GridLayout(2, 3));
         frame.add(ledPanel1);
         frame.add(titlePanel);

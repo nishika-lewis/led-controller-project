@@ -1,26 +1,48 @@
 package io.github.ledproject;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
 import org.atsign.client.api.AtClient;
 import org.atsign.common.AtSign;
 import org.atsign.common.KeyBuilders;
 import org.atsign.common.Keys.PublicKey;
+import com.google.gson.Gson;
 
 public class App
 {
-    private static final AtSign APP_ATSIGN = new AtSign("@computer0");
-    private static final AtSign PICO_ATSIGN = new AtSign("@maximumcomputer");
+    // Read in atSign names from user settings.
+    private static final String SETTINGS = "settings.json";
+    private static final AtSign APP_ATSIGN = new AtSign(readSettings("appAtSign"));
+    private static final AtSign PICO_ATSIGN = new AtSign(readSettings("picoAtSign"));
+    
+    // Set up public keys.
     private static final String APP_KEY = "instructions";
     private static final String PICO_KEY = "led";
+    
+    // Initial prompt for terminal application.
     private static final String PROMPT = "Greetings! What text would you like to display?\n1. AtSign\n2. UMass Boston\n3. Hello World!\n4. (Custom)\n5. Quit";
     
     public static void main(String args[]) throws Exception
     {
+        // If no command-line arguments were given, start the terminal application.
         if (args.length == 0) startPrompt();
+        // Otherwise, display the first argument on the pico's LED matrix.
         else if (StringUtils.isNotBlank(args[0])) displayText(args[0]);
     }
     
+    /**
+     * Begins the terminal-based LED controller application. It starts by listing each text
+     * display option and a quit option. If the user enters a text option, it is sent to the
+     * pico to be displayed. The user is then asked to enter a new option (until they quit).
+     * 
+     * @throws Exception - if there was an error sending LED display text.
+     */
     public static void startPrompt() throws Exception
     {
         System.out.println(PROMPT); // Display starting prompt.
@@ -35,6 +57,7 @@ public class App
                 // Dispatch on the digit received.
                 switch (input)
                 {
+                    // Fixed display text options.
                     case 1:
                         displayText("AtSign");
                         break;
@@ -44,18 +67,22 @@ public class App
                     case 3:
                         displayText("Hello World!");
                         break;
+                    // Custom display text option.
                     case 4:
                         sc.nextLine(); // Clear input buffer.
                         System.out.println("Enter your custom text:");
                         displayText(sc.nextLine());
                         break;
+                    // Quit program.
                     case 5:
                         System.out.println("Goodbye!");
-                        return; // Quit program.
+                        return;
+                    // Corner case handling.
                     default:
                         System.out.println("Invalid choice. Try again.");
                 }
                 
+                // Once the pico receives the display text, prompt the user for a new option.
                 System.out.println("Enter a new option:");
             }
         }
@@ -139,5 +166,24 @@ public class App
     {
         int displayCharacters = text.trim().length();
         Thread.sleep(4250 + 800 * displayCharacters);
+    }
+    
+    /**
+     * Reads the given key from the settings.json file and returns its value.
+     * 
+     * @param key - the key to parse from the settings file.
+     * @return the value of the given key in the settings file.
+     */
+    private static String readSettings(String key)
+    {
+        try (Reader reader = Files.newBufferedReader(Paths.get(SETTINGS)))
+        {
+            Map<?, ?> map = new Gson().fromJson(reader, Map.class);
+            return map.get(key).toString();
+        }
+        catch (IOException e)
+        {
+            throw new UncheckedIOException(e);
+        }
     }
 }

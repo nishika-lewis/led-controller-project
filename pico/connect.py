@@ -2,12 +2,10 @@ import gc
 
 
 def main():
-    # Read settings.json
-    from lib.at_client import io_util
-    ssid, password, atSign = io_util.read_settings()
-    del io_util
+    # Read user settings.
+    ssid, password, picoAtSign, appAtSign = read_settings()
 
-    # Connect to wifi.
+    # Connect to Wi-Fi.
     from lib import wifi
     print(f'Connecting to WiFi {ssid}...')
     wifi.init_wlan(ssid, password)
@@ -15,7 +13,7 @@ def main():
 
     # Connect and pkam authenticate into secondary.
     from lib.at_client import at_client
-    atClient = at_client.AtClient(atSign, writeKeys=False)
+    atClient = at_client.AtClient(picoAtSign, writeKeys=True)
 
     # Explicitly garbage collect to avoid memory errors.
     gc.collect()
@@ -27,11 +25,9 @@ def main():
     from led_matrix import display_text, init_matrix
     matrix = init_matrix()
 
-    # Set up atsigns/public keys and read in their values.
-    appKey = 'instructions'
+    # Set up public keys for each atSign and read in their values.
     picoKey = 'led'
-    appAtSign = '@computer0'
-    picoAtSign = '@maximumcomputer'
+    appKey = 'instructions'
     ledStatus = int(atClient.get_public(picoKey, picoAtSign))
     previousText = atClient.get_public(appKey, appAtSign)
 
@@ -50,6 +46,16 @@ def main():
             # Display LED text w/o any leading or trailing whitespace.
             display_text(matrix, text.strip())
             previousText = text
+
+
+# Reads in Wi-Fi settings and atSign names from settings.json.
+def read_settings():
+    import ujson
+    with open('settings.json') as f:
+        info = ujson.loads(f.read())
+        return (info['ssid'], info['password'],
+                info['picoAtSign'].replace('@', ''),
+                info['appAtSign'].replace('@', ''))
 
 
 if __name__ == '__main__':

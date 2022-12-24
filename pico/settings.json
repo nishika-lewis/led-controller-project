@@ -1,5 +1,6 @@
 {
-    "ssid": "DESKTOP-UPDUQDD",
-    "password": "78pO84|0",
-    "atSign": "@maximumcomputer"
+    "ssid": "<Enter Wi-Fi Network Here>",
+    "password": "<Enter Wi-Fi Password Here>",
+    "picoAtSign": "@maximumcomputer",
+    "appAtSign": "@computer0"
 }
