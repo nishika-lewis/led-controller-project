@@ -261,6 +261,8 @@ You should see a window like the above appear on your screen.
 
 If you want to display a preset text option on the LED matrix, you can click any of the three buttons on the left. If you want to display a custom text option, simply enter text in the text field and press "Submit." When you are done, you can press "Quit" to exit the program (or click the 'X' at the top right window corner).
 
+https://user-images.githubusercontent.com/41876812/209421772-63ee3a02-1a9e-40ba-9029-b3b5d1afb66a.mp4
+
 Note:
 * Clicking multiple buttons in succession (without waiting for the text to display) puts the display text in a queue, where they are then displayed by order of press on the LED matrix.
 * Blank text will not be displayed on the LED matrix, and leading/trailing whitespace will always be stripped from custom text.
