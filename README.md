@@ -253,7 +253,7 @@ data:success
 
 If everything went well, you should see output similar to what is shown above. If you encountered a MemoryError, ECONNABORTED error, or any other extraneous error, try resetting the board, plugging the Pico in/out, or reloading VS Code. This usually fixes those sporadic issues.
 
-2. Open the VS Code window that is in the `led-controller-project/java_app` directory. Then, open `led-controller-project/java_app/src/main/java/io/github/ledproject/UI.java`. Start up the Java application by clicking **Run > (Run Without Debugging)** in the window (or `CTRL + F5`).
+2. Open the VS Code window that is in the `led-controller-project/java_app` directory. Then, open `src/main/java/io/github/ledproject/UI.java`. Start up the Java application by clicking **Run > (Run Without Debugging)** in the window (or `CTRL + F5`).
 
 ![app_window.png](assets/app_window.png)
 
