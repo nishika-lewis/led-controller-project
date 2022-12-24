@@ -107,7 +107,7 @@ code .
 
 You can close the old window after this step.
 
-2. Open the command pallette via `Ctrl + Shift + P` (or `Cmd + Shift + P` if you are on a Mac), type `Configure Project`, and press Enter. The Pico-W-Go extension should set up your current folder as a Pico W project by initializing a `.vscode/` hidden folder and a `.picowgo` hidden file. Now, any Pico-W-Go commands should work. You can also access Pico-W-Go commands by clicking on "All Commands" at the bottom of VSCode.
+2. Open the command pallette via `Ctrl + Shift + P` (or `Cmd + Shift + P` if you are on a Mac), type `Configure Project`, and press Enter. The Pico-W-Go extension should set up your current folder as a Pico W project by initializing a `.vscode/` hidden folder and a `.picowgo` hidden file. Now, any Pico-W-Go commands should work. You can also access Pico-W-Go commands by clicking on "All Commands" at the bottom of VS Code.
 
 3. Open `blink.py`. You should see a toolbar like this at the bottom of VS Code:
 
@@ -179,7 +179,7 @@ If it does not look like the above, Pico-W-Go may be running into issues uploadi
 Started FTP server: ftp://pico@127.0.0.1:2121
 ```
 
-1. Open your FTP software and connect to this address. If it asks for a password, it should be `pico`. If you've uploaded files to the Pico before, you should also see them once you've connected. In WinSCP, the root directory looks like this:
+3. Open your FTP software and connect to this address. If it asks for a password, it should be `pico`. If you've uploaded files to the Pico before, you should also see them once you've connected. In WinSCP, the root directory looks like this:
 
 ![ftp.png](assets/ftp.png)
 
@@ -187,7 +187,7 @@ Started FTP server: ftp://pico@127.0.0.1:2121
 
 ![pico_keys.png](assets/pico_keys.png)
 
-5. Close the FTP server by pressing "Stop" on the bottom toolbar of VSCode.
+5. Close the FTP server by pressing "Stop" on the bottom toolbar of VS Code.
 
 ```
 >>> 
