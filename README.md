@@ -179,7 +179,7 @@ If it does not look like the above, Pico-W-Go may be running into issues uploadi
 Started FTP server: ftp://pico@127.0.0.1:2121
 ```
 
-3. Open your FTP software and connect to this address. If it asks for a password, it should be `pico`. If you've uploaded and files to the Pico before, you should see them once you've connected. In WinSCP, the root directory looks like this:
+1. Open your FTP software and connect to this address. If it asks for a password, it should be `pico`. If you've uploaded files to the Pico before, you should also see them once you've connected. In WinSCP, the root directory looks like this:
 
 ![ftp.png](assets/ftp.png)
 
