@@ -57,7 +57,7 @@ Once Visual Studio Code is open, you can close the old terminal. Open up an inte
 
 ## 2. Configuring the atSigns
 
-In our presentation, we used the atSigns `@computer0` and `@maximumcomputer` on the Pico and Java app, respectively. Change these to the two atSigns you own by modifying the following files:
+In our presentation, we used the atSigns `@maximumcomputer` and `@computer0` on the Pico and Java app, respectively. Change these to the two atSigns you own by modifying the following files:
 
 `led-controller-project/pico/settings.json`
 
