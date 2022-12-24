@@ -1,2 +1,4 @@
 *.atKeys
 *.class
+.picowgo
+.vscode
