@@ -267,7 +267,7 @@ Note:
 * Clicking multiple buttons in succession (without waiting for the text to display) puts the display text in a queue, where they are then displayed by order of press on the LED matrix.
 * Blank text will not be displayed on the LED matrix, and leading/trailing whitespace will always be stripped from custom text.
 * The LED matrix may flash with all dots turned on right after the Pico connection code reaches `data:success`. This is a normal; it indicates the matrix is working.
-* If the Pico disconnects from Wi-Fi while the connection code is still running, you may see the previous text option get re-displayed on the LED matrix. This occurs because we internally check to see whether the display text has updated between 
+* If the Pico loses internet access while the connection code is still running, you may see the previous text option get re-displayed on the LED matrix.
 
 <h2>References</h2>
 
