@@ -9,7 +9,6 @@ I contributed to the **frontend development** of the desktop application using *
 
 - Built the GUI using **Java Swing** for real-time LED message control
 - Designed user interaction flows and layout (buttons, text areas, status labels)
-- Integrated Swing components with the backend logic for sending messages
 - Created and managed visual assets (icons, background images, etc.)
 - Ensured the interface is user-friendly and visually consistent
 
