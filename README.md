@@ -1,4 +1,4 @@
-#led-controller-project
+# led-controller-project:
 This project allows remote control of LED messages through a desktop application integrated with Raspberry Pi Pico. It uses AtPlatform SDKs for secure messaging and allows users to send custom LED messages through a connected interface.
 
 ---
