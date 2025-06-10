@@ -1,6 +1,24 @@
-<h1>led-controller-project</h1>
+#led-controller-project
+This project allows remote control of LED messages through a desktop application integrated with Raspberry Pi Pico. It uses AtPlatform SDKs for secure messaging and allows users to send custom LED messages through a connected interface.
 
-Control LEDs using two atSigns. One atSign will be the application (terminal/app) sending data to the other atSign that will be the device atSign controlling the LEDs.
+---
+
+## 🙋‍♀️ My Contribution — Nishika Lewis
+
+I contributed to the **frontend development** of the desktop application using **Java Swing**. My work focused on designing a clean and interactive user experience that enables users to control LED behavior smoothly. Specifically, I:
+
+- Built the GUI using **Java Swing** for real-time LED message control
+- Designed user interaction flows and layout (buttons, text areas, status labels)
+- Integrated Swing components with the backend logic for sending messages
+- Created and managed visual assets (icons, background images, etc.)
+- Ensured the interface is user-friendly and visually consistent
+
+---
+
+# Reference Note:
+# Here is the rest of the documentation: 
+> 📌 *Original project by [Udaya](https://github.com/Udaya-X2)*
+All backend logic, encryption, Raspberry Pi Pico integration, and core architecture were developed by Udaya.
 
 # Table of Contents
 
